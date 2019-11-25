@@ -2,13 +2,17 @@ require 'sinatra/base'
 
 class BookmarkManager < Sinatra::Base
 
+  get '/' do
+    'Bookmark Manager'
+  end
+
   get '/bookmarks' do
-  bookmarks = [
+  @bookmarks = [
             "http://www.makersacademy.com",
             "https://www.tutorialspoint.com"
            ]
 
-  bookmarks.join
+  erb :bookmarks
 end
 
   run! if app_file == $0
