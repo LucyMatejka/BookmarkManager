@@ -1,6 +1,15 @@
  require 'pg'
 
  class Bookmark
+
+   attr_reader :id, :title, :url
+
+   def initialize(id:, title:, url:)
+     @id = id
+     @title = title
+     @url = url
+   end
+
    def self.all
      #if test then connect to the test database otherwise connect to
      #bookmark_manager
