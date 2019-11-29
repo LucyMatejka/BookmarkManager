@@ -18,10 +18,10 @@ get '/bookmarks/new' do
 end
 #changed quotation marks line 17 from w/through
 
-post '/bookmarks' do
-  Bookmark.create(url: params[:url])
+post '/bookmarks/new' do
+  Bookmark.create(url: params[:url], title: params[:title])
   redirect '/bookmarks'
 end
-
+#changed direction at Stage 11
   run! if app_file == $0
 end

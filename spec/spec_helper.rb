@@ -4,9 +4,11 @@ ENV['ENVIRONMENT'] = 'test'
 
 RSpec.configure do |config|
   config.before(:each) do
-    'setup_test_database'
+    setup_test_database
   end
 end
+
+#empty test database before running rspec
 
 require File.join(File.dirname(__FILE__), '..', 'app.rb')
 
