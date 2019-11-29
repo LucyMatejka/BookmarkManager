@@ -6,13 +6,18 @@ describe Bookmark do
     it 'returns all bookmarks' do
       connection = PG.connect(dbname: 'bookmark_manager_test')
 
-      connection.exec("INSERT INTO bookmarks (url) VALUES ('https://www.makersacademy.com');")
-      connection.exec("INSERT INTO bookmarks (url) VALUES ('http://www.tutorialspoint.com');")
-
+      #connection.exec("INSERT INTO bookmarks (url) VALUES ('https://www.makersacademy.com');")
+      #connection.exec("INSERT INTO bookmarks (url) VALUES ('http://www.tutorialspoint.com');")
+      bookmark = Bookmark.create(url: "http://www.makersacademy.com", title: "Makers Academy")
+      Bookmark.create(url: "http://www.tutorialspoint.com", title: "Tutorials Point")
       bookmarks = Bookmark.all
 
-      expect(bookmarks).to include("https://www.makersacademy.com")
-      expect(bookmarks).to include("http://www.tutorialspoint.com")
+      expect(bookmarks.length).to eq 2
+      expect(bookmarks.first).to be_a Bookmark
+      expect(bookmarks.first.id).to eq bookmark.id
+      expect(bookmarks.first.title).to eq 'Makers Academy'
+      expect(bookmarks.first.url).to eq("https://www.makersacademy.com")
+    #  expect(bookmarks).to include("http://www.tutorialspoint.com")
     end
   end
 end

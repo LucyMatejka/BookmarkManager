@@ -1,27 +1,29 @@
  require 'pg'
 
-class Bookmark
-  def self.all
-    #if test then connect to the test database otherwise connect to
-    #bookmark_manager
-    if ENV['ENVIRONMENT'] == 'test'
-    connection = PG.connect(dbname: 'bookmark_manager_test')
-  else
-    connection = PG.connect(dbname: 'bookmark_manager')
-  end
-    result = connection.exec('SELECT * FROM bookmarks')
-    #SQL commands
-    result.map { |bookmark| bookmark['url'] }
-  end
+ class Bookmark
+   def self.all
+     #if test then connect to the test database otherwise connect to
+     #bookmark_manager
+     if ENV['ENVIRONMENT'] == 'test'
+       connection = PG.connect(dbname: 'bookmark_manager_test')
+     else
+       connection = PG.connect(dbname: 'bookmark_manager')
+     end
+     result = connection.exec('SELECT * FROM bookmarks')
+     #SQL commands
+     result.map do |bookmark|
+       Bookmark.new(id: bookmark['id'], title: bookmark['title'], url: bookmark['url'])
+     end
+   end
 
-  def self.create(url:, title:)
-  if ENV['ENVIRONMENT'] == 'test'
-    connection = PG.connect(dbname: 'bookmark_manager_test')
-  else
-    connection = PG.connect(dbname: 'bookmark_manager')
-  end
+   def self.create(url:, title:)
+     if ENV['ENVIRONMENT'] == 'test'
+       connection = PG.connect(dbname: 'bookmark_manager_test')
+     else
+       connection = PG.connect(dbname: 'bookmark_manager')
+     end
 
-  connection.exec("INSERT INTO bookmarks (title, url) VALUES('#{title}','#{url}') RETURNING id, url, title ")
-  #SQL commands
-end
-end
+     connection.exec("INSERT INTO bookmarks (title, url) VALUES('#{title}','#{url}') RETURNING id, url, title ")
+     #SQL commands
+   end
+ end
