@@ -26,13 +26,16 @@
    end
 
    def self.create(url:, title:)
+     return false unless is_url?(url)
      if ENV['ENVIRONMENT'] == 'test'
        connection = PG.connect(dbname: 'bookmark_manager_test')
      else
        connection = PG.connect(dbname: 'bookmark_manager')
      end
 
-     connection.exec("INSERT INTO bookmarks (title, url) VALUES('#{title}','#{url}') RETURNING id, url, title ")
+     result = connection.exec("INSERT INTO bookmarks (title, url) VALUES('#{title}','#{url}') RETURNING id, url, title ")
+     Bookmark.new(id: result[0]['id'], title: result[0]['title'], utl: result[0]['url'])
      #SQL commands
+     #check connection.exec line
    end
  end
